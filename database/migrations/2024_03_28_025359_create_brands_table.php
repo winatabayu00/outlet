@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create(Table::BRANDS->value, function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps(precision: 6);
         });
     }
