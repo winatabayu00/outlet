@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use \Winata\PackageBased\Database\Models\Model as BaseModel;
 
-class Model extends Model
+class Model extends BaseModel
 {
-    use HasFactory;
+
+
 }

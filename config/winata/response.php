@@ -16,7 +16,7 @@ return [
 
     'reportable' => [
         'telegram' => [
-            'logging' => true
+            'logging' => false
         ],
     ],
     'driver' => [

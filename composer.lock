@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f24ce755ec0f12e91f9ce6bf8c80194e",
+    "content-hash": "d1e09e1318161561b7073475c2b3f493",
     "packages": [
         {
             "name": "brick/math",
@@ -6188,16 +6188,16 @@
         },
         {
             "name": "winatabayu00/package-based",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/effortless-codes/package-based.git",
-                "reference": "1e9f24729b8aa12f7bb484e577b5fe24764d3c51"
+                "reference": "b5be249fa4b24aa466df7074ea52a24e3fd12e75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/effortless-codes/package-based/zipball/1e9f24729b8aa12f7bb484e577b5fe24764d3c51",
-                "reference": "1e9f24729b8aa12f7bb484e577b5fe24764d3c51",
+                "url": "https://api.github.com/repos/effortless-codes/package-based/zipball/b5be249fa4b24aa466df7074ea52a24e3fd12e75",
+                "reference": "b5be249fa4b24aa466df7074ea52a24e3fd12e75",
                 "shasum": ""
             },
             "require": {
@@ -6231,22 +6231,22 @@
             "description": "Laravel package based to helping develop product",
             "support": {
                 "issues": "https://github.com/effortless-codes/package-based/issues",
-                "source": "https://github.com/effortless-codes/package-based/tree/v1.0.0"
+                "source": "https://github.com/effortless-codes/package-based/tree/v1.0.1"
             },
-            "time": "2024-03-27T23:03:31+00:00"
+            "time": "2024-03-28T03:14:02+00:00"
         },
         {
             "name": "winatabayu00/response",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/effortless-codes/response.git",
-                "reference": "b44e4975c59837bf69490a629bccf282415a8d10"
+                "reference": "efc2e15dd0c46904eea88c435104ca92016936db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/effortless-codes/response/zipball/b44e4975c59837bf69490a629bccf282415a8d10",
-                "reference": "b44e4975c59837bf69490a629bccf282415a8d10",
+                "url": "https://api.github.com/repos/effortless-codes/response/zipball/efc2e15dd0c46904eea88c435104ca92016936db",
+                "reference": "efc2e15dd0c46904eea88c435104ca92016936db",
                 "shasum": ""
             },
             "require": {
@@ -6261,6 +6261,9 @@
                 }
             },
             "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
                 "psr-4": {
                     "Winata\\Core\\Response\\": "src/"
                 }
@@ -6278,9 +6281,9 @@
             "description": "Response",
             "support": {
                 "issues": "https://github.com/effortless-codes/response/issues",
-                "source": "https://github.com/effortless-codes/response/tree/v1.0.4"
+                "source": "https://github.com/effortless-codes/response/tree/v1.0.5"
             },
-            "time": "2024-03-27T23:25:08+00:00"
+            "time": "2024-03-28T03:24:25+00:00"
         }
     ],
     "packages-dev": [
@@ -8726,7 +8729,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1"
+        "php": "^8.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

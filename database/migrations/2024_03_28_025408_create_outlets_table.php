@@ -16,10 +16,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->text('address');
-            $table->decimal('longitude', 10,6);
-            $table->decimal('latitude', 10,6);
+            $table->decimal('longitude', 10, 6);
+            $table->decimal('latitude', 10, 6);
             $table->timestamps(precision: 6);
-
         });
     }
 
