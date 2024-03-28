@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Winata\PackageBased\Database\Blueprints\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('media', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
 
             $table->morphs('model');
             $table->uuid('uuid')->nullable()->unique();
