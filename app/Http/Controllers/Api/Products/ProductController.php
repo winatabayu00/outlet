@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\Controller as ApiController;
 use Dentro\Yalr\Attributes;
 use Winata\Core\Response\Http\Response;
 
-#[Attributes\Name('product', true, true)]
+#[Attributes\Name('product', false, true)]
 #[Attributes\Prefix('product')]
 class ProductController extends ApiController
 {

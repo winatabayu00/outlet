@@ -51,6 +51,7 @@ return [
 
     'web' => [
         /** @inject web **/
+        \App\Http\Controllers\Api\Brands\BrandController::class,
     ],
     'api' => [
         /** @inject api **/
