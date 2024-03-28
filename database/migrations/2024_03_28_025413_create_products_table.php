@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Outlet::class, 'outlet_id')
                 ->nullable()
                 ->constrained(Table::OUTLETS->value)
-                ->onDelete('restrict');
+                ->nullOnDelete();
             $table->string('name');
             $table->decimal('price', total: 12);
             $table->timestamps(precision: 6);

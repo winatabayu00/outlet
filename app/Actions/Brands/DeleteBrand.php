@@ -27,6 +27,7 @@ class DeleteBrand extends BaseAction
 
     /**
      * @return bool
+     * @throws \Exception
      */
     public function handle(): bool
     {

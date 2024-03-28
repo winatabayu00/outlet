@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'performable' => true,
+    'performable' => false,
 
     /**
      * The prefer_deletion key type.

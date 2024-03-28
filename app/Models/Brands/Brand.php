@@ -2,8 +2,10 @@
 
 namespace App\Models\Brands;
 
+use App\Concerns\Model\BeforeDeletion;
 use App\Enums\Table;
 use App\Models\Model;
+use App\Models\Outlets\Outlet;
 use App\Models\Products\Product;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -30,6 +32,10 @@ class Brand extends Model implements HasMedia
 
     protected $table = Table::BRANDS->value;
 
+    public array $relationChecking = [
+        'outlets', 'products'
+    ];
+
     protected $fillable = [
         'name'
     ];
@@ -39,7 +45,7 @@ class Brand extends Model implements HasMedia
      */
     public function outlets(): HasMany
     {
-        return $this->hasMany(Brand::class, 'brand_id');
+        return $this->hasMany(Outlet::class, 'brand_id');
     }
 
     /**

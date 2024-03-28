@@ -56,9 +56,10 @@ class CreateBrand extends BaseAction
     public function handle(): Brand
     {
         $input = Brand::getFillableAttribute($this->inputs);
+
         /** @var Brand $newBrand */
         $newBrand = Brand::query()
             ->create($input);
-        return $newBrand;
+        return $newBrand->refresh();
     }
 }
