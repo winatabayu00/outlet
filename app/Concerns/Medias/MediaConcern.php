@@ -6,8 +6,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\DiskDoesNotExist;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 
 class MediaConcern
 {
@@ -28,6 +26,10 @@ class MediaConcern
         }
     }
 
+    /**
+     * @return void
+     * @throws DiskDoesNotExist
+     */
     public function linkedMediaCollection(): void
     {
         if ($this->deletePreviousMedia) {
@@ -52,7 +54,7 @@ class MediaConcern
             return;
         }
 
-        if ($this->source instanceof Request){
+        if ($this->source instanceof Request) {
             $this->handleUploadedMediaFromRequest();
         }
 
@@ -258,12 +260,6 @@ class MediaConcern
         return $this;
     }
 
-    public
-    function __destruct()
-    {
-        $this->linkedMediaCollection();
-    }
-
     /**
      * @param array|null $customProperties
      * @return $this
@@ -273,5 +269,14 @@ class MediaConcern
     {
         $this->customProperties = $customProperties;
         return $this;
+    }
+
+    /**
+     * @throws DiskDoesNotExist
+     */
+    public
+    function __destruct()
+    {
+        $this->linkedMediaCollection();
     }
 }
