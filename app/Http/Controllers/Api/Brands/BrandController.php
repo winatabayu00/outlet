@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api\Brands;
 
 use App\Actions\Brands\DeleteBrand;
 use App\Http\Controllers\Api\Controller as ApiController;
+use App\Http\Resources\Brands\BrandCollection;
+use App\Http\Resources\Brands\BrandResource;
 use App\Models\Brands\Brand;
+use App\Queries\Brand\BrandQuery;
 use App\Services\Brand\BrandService;
 use Dentro\Yalr\Attributes;
 use Illuminate\Http\Request;
@@ -16,10 +19,15 @@ use Winata\Core\Response\Http\Response;
 #[Attributes\Prefix('brand')]
 class BrandController extends ApiController
 {
+    /**
+     * @throws ValidationException
+     */
     #[Attributes\Get('', name: 'index')]
     public function index(): Response
     {
-        return $this->response();
+        $query = (new BrandQuery())->build();
+
+        return $this->response(new BrandCollection($query->paginate()));
     }
 
     /**
@@ -37,9 +45,9 @@ class BrandController extends ApiController
     }
 
     #[Attributes\Get('{brand}', name: 'show')]
-    public function show(): Response
+    public function show(Brand $brand): Response
     {
-        return $this->response();
+        return $this->response(new BrandResource($brand));
     }
 
     /**

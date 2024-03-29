@@ -28,12 +28,14 @@ class Brand extends Model implements HasMedia
     use HasFactory;
     use HasUuids;
 
-    const MORPH_ALIAS = 'brand';
-
     protected $table = Table::BRANDS->value;
 
     public array $relationChecking = [
         'outlets', 'products'
+    ];
+
+    public array $searchable = [
+        'name'
     ];
 
     protected $fillable = [

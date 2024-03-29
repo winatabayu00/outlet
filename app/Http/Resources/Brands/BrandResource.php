@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Brands;
 
+use App\Enums\Media\MediaCollectionNames;
 use App\Models\Brands\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,8 +19,10 @@ class BrandResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $logo = $this->resource->getFirstMediaUrl(MediaCollectionNames::BRAND_LOGO->value);
+
         return [
-            'logo' => '',
+            'logo' => $this->when(!empty($logo), $logo, null),
             'name' => $this->resource->name,
         ];
     }
