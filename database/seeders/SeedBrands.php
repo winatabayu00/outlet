@@ -15,8 +15,10 @@ class SeedBrands extends Seeder
     {
         $brands = [
             [
-                'name' => fake()->company()
-            ]
+                'name' => 'xiaomi',
+            ],[
+                'name' => 'samsung',
+            ],
         ];
 
         foreach ($brands as $brand){

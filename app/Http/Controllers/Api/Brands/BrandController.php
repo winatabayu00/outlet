@@ -69,7 +69,7 @@ class BrandController extends ApiController
      * @param Brand $brand
      * @return Response
      */
-    #[Attributes\Delete('{brand}', name: 'update')]
+    #[Attributes\Delete('{brand}', name: 'destroy')]
     public function destroy(Brand $brand): Response
     {
         (new DeleteBrand(brand: $brand));
