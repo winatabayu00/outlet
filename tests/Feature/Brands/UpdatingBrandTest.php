@@ -25,7 +25,7 @@ it('can update new brand without logo', function () {
         ->toBe($brandData->input('name'));
 });
 
-it('cant update brand because the brand name already exists', function () {
+it('cant update brand because The brand name has been used', function () {
     /** @var Brand $brand */
     $brand = Brand::query()
         ->firstOrFail();
@@ -43,7 +43,7 @@ it('cant update brand because the brand name already exists', function () {
 
     expect($newBrand->name)
         ->toBe($brandData->input('name'));
-})->throws(BaseException::class, 'The brand name already exists');
+})->throws(BaseException::class, 'The brand name has been used');
 
 // using endpoint
 it('can update brand from endpoint', function () {

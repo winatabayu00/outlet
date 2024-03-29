@@ -17,6 +17,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property string id
+ * @property string brand_id
  * @property string name
  * @property string address
  * @property float longitude
@@ -42,6 +43,11 @@ class Outlet extends Model implements HasMedia
         'address',
         'longitude',
         'latitude',
+    ];
+
+    protected $casts = [
+        'longitude' => 'float',
+        'latitude' => 'float',
     ];
 
     /**

@@ -16,9 +16,8 @@ class OutletService extends BaseService
 
     /**
      * @param Request $request
-     * @return Brand
+     * @return Outlet
      * @throws ValidationException
-     * @throws \Throwable
      */
     public function create(
         Request $request

@@ -20,7 +20,7 @@ it('can create new brand without logo', function () {
         ->toBe($brandData->input('name'));
 });
 
-it('cant create new brand because the brand name already exists', function () {
+it('cant create new brand because The brand name has been used', function () {
     $brandData = new Request([
         'name' => 'Apple'
     ]);
@@ -32,7 +32,7 @@ it('cant create new brand because the brand name already exists', function () {
         ->toBe($brandData->input('name'));
 
     $service->create($brandData);
-})->throws(BaseException::class, 'The brand name already exists');
+})->throws(BaseException::class, 'The brand name has been used');
 
 // using endpoint
 it('can create new brand from endpoint', function () {

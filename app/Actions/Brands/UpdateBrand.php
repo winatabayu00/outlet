@@ -12,7 +12,6 @@ use Winata\PackageBased\Concerns\ValidationInput;
 class UpdateBrand extends BaseAction
 {
     use ValidationInput;
-    protected array $validatedInputs;
 
 
     public function __construct(
@@ -30,7 +29,7 @@ class UpdateBrand extends BaseAction
      */
     public function rules(): BaseAction
     {
-        $this->validatedInputs = $this->validate(
+        $validated = $this->validate(
             inputs: $this->inputs,
             rules: [
                 'name' => ['required', 'string', 'max:255']
@@ -41,13 +40,13 @@ class UpdateBrand extends BaseAction
         // can use exists validation but i want handle duplicate data with mapping response code
         $brandExists = Brand::query()
             ->where('id', '!=', $this->brand->id)
-            ->where('name', '=', $this->validatedInputs['name'])
+            ->where('name', '=', $validated['name'])
             ->first();
 
         if ($brandExists instanceof Brand){
             throw new BaseException(
                 rc: ResponseCode::ERR_ENTITY_ALREADY_EXISTS,
-                message: 'The brand name already exists'
+                message: 'The brand name has been used'
             );
         }
 
@@ -59,7 +58,7 @@ class UpdateBrand extends BaseAction
      */
     public function handle(): Brand
     {
-        $input = Brand::getFillableAttribute($this->validatedInputs);
+        $input = Brand::getFillableAttribute($this->validatedData);
         /** @var Brand $newBrand */
         $newBrand = Brand::query()
             ->create($input);

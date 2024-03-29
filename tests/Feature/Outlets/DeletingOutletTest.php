@@ -4,19 +4,33 @@ namespace Feature\Brand;
 
 use App\Enums\ResponseCode\ResponseCode;
 use App\Models\Brands\Brand;
-use App\Services\Brand\BrandService;
+use App\Services\Outlet\OutletService;
 use Illuminate\Http\Request;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Winata\Core\Response\Exception\BaseException;
 
-
-// using endpoint
-it('can delete the brand from endpoint', function () {
+beforeEach(function () {
+    /** @var Brand $brand */
     $brand = Brand::query()
         ->firstOrFail();
 
+    $outletData = new Request([
+        'brand_id' => $brand->id,
+        'name' => fake()->name,
+        'address' => fake()->address,
+        'longitude' => fake()->longitude,
+        'latitude' => fake()->latitude,
+    ]);
+
+    $service = new OutletService();
+    $this->outlet = $service->create($outletData);
+});
+
+// using endpoint
+it('can update outlet from endpoint', function () {
+
     $response = $this->delete(
-        uri: route('brand.destroy', ['brand' => $brand->id]),
+        uri: route('outlet.destroy', ['outlet' => $this->outlet->id]),
         headers: [
             'content_type' => 'application/json'
         ]

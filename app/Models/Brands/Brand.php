@@ -2,7 +2,6 @@
 
 namespace App\Models\Brands;
 
-use App\Concerns\Model\BeforeDeletion;
 use App\Enums\Table;
 use App\Models\Model;
 use App\Models\Outlets\Outlet;

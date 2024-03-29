@@ -13,8 +13,6 @@ class CreateBrand extends BaseAction
 {
     use ValidationInput;
 
-    protected array $validatedInputs;
-
     public function __construct(
         public readonly array $inputs
     )
@@ -29,7 +27,7 @@ class CreateBrand extends BaseAction
      */
     public function rules(): BaseAction
     {
-        $this->validatedInputs = $this->validate(
+        $validated = $this->validate(
             inputs: $this->inputs,
             rules: [
                 'name' => ['required', 'string', 'max:255']
@@ -39,13 +37,13 @@ class CreateBrand extends BaseAction
         // check brand duplicate
         // can use exists validation but i want handle duplicate data with mapping response code
         $brandExists = Brand::query()
-            ->where('name', '=', $this->validatedInputs['name'])
+            ->where('name', '=', $validated['name'])
             ->first();
 
         if ($brandExists instanceof Brand){
             throw new BaseException(
                 rc: ResponseCode::ERR_ENTITY_ALREADY_EXISTS,
-                message: 'The brand name already exists'
+                message: 'The brand name has been used'
             );
         }
 
@@ -57,7 +55,7 @@ class CreateBrand extends BaseAction
      */
     public function handle(): Brand
     {
-        $input = Brand::getFillableAttribute($this->validatedInputs);
+        $input = Brand::getFillableAttribute($this->validatedData);
 
         /** @var Brand $newBrand */
         $newBrand = Brand::query()

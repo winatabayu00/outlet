@@ -24,6 +24,8 @@ return new class extends Migration
             $table->decimal('longitude', 10, 6);
             $table->decimal('latitude', 10, 6);
             $table->timestamps(precision: 6);
+
+            $table->unique(['brand_id', 'name'], 'unq_brand_id_and_name');
         });
     }
 

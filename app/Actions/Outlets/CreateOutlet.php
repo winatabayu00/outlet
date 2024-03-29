@@ -45,10 +45,23 @@ class CreateOutlet extends BaseAction
         $this->brand = Brand::query()
             ->find($validated['brand_id']);
 
-        if (!$this->brand instanceof Brand){
+        if (!$this->brand instanceof Brand) {
             throw new BaseException(
                 rc: ResponseCode::ERR_ENTITY_NOT_FOUND,
-                message: 'The brand does not exists'
+                message: 'The brand does not exist'
+            );
+        }
+
+        // checking unique name (brand_id, name)
+        $isUniqueOutlet = Outlet::query()
+            ->where('brand_id', '=', $validated['brand_id'])
+            ->where('name', '=', $validated['name'])
+            ->exists();
+
+        if ($isUniqueOutlet) {
+            throw new BaseException(
+                rc: ResponseCode::ERR_ENTITY_ALREADY_EXISTS,
+                message: 'The outlet name has been used'
             );
         }
 
@@ -60,10 +73,13 @@ class CreateOutlet extends BaseAction
      */
     public function handle(): Outlet
     {
-        $input = Outlet::getFillableAttribute($this->inputs);
-        /** @var Outlet $outlet */
-        $outlet = Outlet::query()
-            ->create($input);
-        return $outlet;
+        $input = Outlet::getFillableAttribute($this->validatedData);
+
+        $outlet = new Outlet();
+        $outlet->fill($input);
+        $outlet->brand()->associate($this->brand);
+        $outlet->save();
+
+        return $outlet->refresh();
     }
 }
