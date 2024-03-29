@@ -13,7 +13,6 @@ use Winata\PackageBased\Abstracts\BaseService;
 
 class BrandService extends BaseService
 {
-    use MediaConcern;
 
     /**
      * @param Request $request
@@ -38,24 +37,23 @@ class BrandService extends BaseService
             ->handle();
 
         // link brand logo
-        $this->linkedMediaCollection(
+        linkedMediaCollection(
             model: $newBrand,
-            request: $request,
+            source: $request,
             inputName: 'logo',
-            collectionName: MediaCollectionNames::BRAND_LOGO->value,
-        );
+        )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value);
 
         return $newBrand->refresh();
     }
 
     /**
+     * @param Brand $brand
      * @param Request $request
      * @return Brand
      * @throws ValidationException
-     * @throws \Throwable
      */
     public function update(
-        Brand $brand,
+        Brand   $brand,
         Request $request,
     ): Brand
     {
