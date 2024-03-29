@@ -41,8 +41,7 @@ class BrandService extends BaseService
             model: $newBrand,
             source: $request,
             inputName: 'logo',
-        )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value)
-            ->deletePreviousMedia(true);
+        )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value);
 
         return $newBrand->refresh();
     }
@@ -70,14 +69,13 @@ class BrandService extends BaseService
         $newBrand = (new UpdateBrand(brand: $brand, inputs: $validated))
             ->handle();
 
-        // link new brand logo
-        $this->linkedMediaCollection(
+        // link brand logo
+        linkedMediaCollection(
             model: $newBrand,
-            request: $request,
+            source: $request,
             inputName: 'logo',
-            collectionName: MediaCollectionNames::BRAND_LOGO->value,
-            deletePreviousMedia: true
-        );
+        )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value)
+            ->deletePreviousMedia(true);
 
         return $newBrand->refresh();
     }
