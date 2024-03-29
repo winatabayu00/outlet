@@ -31,9 +31,11 @@ class Outlet extends Model implements HasMedia
     use InteractsWithMedia;
     use HasUuids;
 
-    const MORPH_ALIAS = 'outlet';
-
     protected $table = Table::OUTLETS->value;
+
+    public array $searchable = [
+        'name'
+    ];
 
     protected $fillable = [
         'name',

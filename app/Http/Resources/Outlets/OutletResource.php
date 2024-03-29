@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\Outlets;
 
+use App\Enums\Media\MediaCollectionNames;
 use App\Models\Outlets\Outlet;
-use App\Models\Products\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +19,14 @@ class OutletResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        $picture = $this->resource->getFirstMediaUrl(MediaCollectionNames::OUTLET_PICTURE->value);
+
+        return [
+            'picture' => $this->when(!empty($picture), $picture, null),
+            'name' => $this->resource->name,
+            'address' => $this->resource->address,
+            'longitude' => $this->resource->longitude,
+            'latitude' => $this->resource->latitude,
+        ];
     }
 }

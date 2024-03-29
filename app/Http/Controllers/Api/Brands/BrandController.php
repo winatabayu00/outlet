@@ -32,10 +32,9 @@ class BrandController extends ApiController
 
     /**
      * @param Request $request
-     * @param BrandService $service
      * @return Response
-     * @throws ValidationException
      * @throws Throwable
+     * @throws ValidationException
      */
     #[Attributes\Post('', name: 'create')]
     public function create(Request $request): Response
