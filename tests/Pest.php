@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Testing\Fluent\AssertableJson;
+
 uses(
     Tests\TestCase::class,
     // Illuminate\Foundation\Testing\RefreshDatabase::class,
@@ -30,6 +32,11 @@ uses(
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
 });
+
+function assertSuccessResponseFormat(AssertableJson $json): void
+{
+    $json->hasAll(['rc', 'message', 'timestamp', 'payload']);
+}
 
 /*
 |--------------------------------------------------------------------------

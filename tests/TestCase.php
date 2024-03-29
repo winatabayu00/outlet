@@ -16,7 +16,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         $this->withHeaders([
-            "Accept" => "application/json",
+            'Accept' => 'application/json',
         ]);
     }
 }

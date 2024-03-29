@@ -38,9 +38,9 @@ class BrandController extends ApiController
      * @throws Throwable
      */
     #[Attributes\Post('', name: 'create')]
-    public function create(Request $request, BrandService $service): Response
+    public function create(Request $request): Response
     {
-        $service->create(request: $request);
+        (new BrandService())->create(request: $request);
         return $this->response();
     }
 
