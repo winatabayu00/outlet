@@ -1,5 +1,9 @@
 <?php
 
+use App\Concerns\Medias\MediaConcern;
+use Illuminate\Http\Request;
+use Spatie\MediaLibrary\HasMedia;
+
 if (!function_exists('getDifferenceDistance')) {
 
     /**
@@ -69,5 +73,23 @@ if (!function_exists('generateRandomCoordinatesWithinDistance')) {
         $newLon = $centerLon + rad2deg(atan2(sin($angle) * sin($distance / $earthRadius) * cos(deg2rad($centerLat)), cos($distance / $earthRadius) - sin(deg2rad($centerLat)) * sin(deg2rad($newLat))));
 
         return ['latitude' => $newLat, 'longitude' => $newLon];
+    }
+}
+
+if (!function_exists('linkedMediaCollection')) {
+
+    /**
+     * @param HasMedia $model
+     * @param string|Request $source
+     * @param string $inputName
+     * @return MediaConcern
+     */
+    function linkedMediaCollection(
+        HasMedia $model,
+        string|Request $source,
+        string $inputName
+    ): MediaConcern
+    {
+        return new MediaConcern(model: $model, source: $source,inputName: $inputName);
     }
 }
