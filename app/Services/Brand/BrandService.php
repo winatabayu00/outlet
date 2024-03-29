@@ -41,7 +41,8 @@ class BrandService extends BaseService
             model: $newBrand,
             source: $request,
             inputName: 'logo',
-        )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value);
+        )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value)
+            ->deletePreviousMedia(true);
 
         return $newBrand->refresh();
     }
