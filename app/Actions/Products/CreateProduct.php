@@ -2,9 +2,12 @@
 
 namespace App\Actions\Products;
 
+use App\Enums\ResponseCode\ResponseCode;
 use App\Models\Brands\Brand;
+use App\Models\Outlets\Outlet;
 use App\Models\Products\Product;
 use Illuminate\Validation\ValidationException;
+use Winata\Core\Response\Exception\BaseException;
 use Winata\PackageBased\Abstracts\BaseAction;
 use Winata\PackageBased\Concerns\ValidationInput;
 
@@ -13,7 +16,7 @@ class CreateProduct extends BaseAction
     use ValidationInput;
 
     protected ?Brand $brand = null;
-    protected ?Brand $outlet = null;
+    protected ?Outlet $outlet = null;
 
     public function __construct(
         public readonly array $inputs
@@ -24,6 +27,7 @@ class CreateProduct extends BaseAction
 
     /**
      * @return BaseAction
+     * @throws BaseException
      * @throws ValidationException
      */
     public function rules(): BaseAction
@@ -38,14 +42,24 @@ class CreateProduct extends BaseAction
             ],
         );
 
-        if (!empty($validated['brand_id'])) {
-            $this->brand = Brand::query()
-                ->find($validated['brand_id']);
-        }
+        $this->brand = Brand::query()
+            ->find($validated['brand_id']);
 
         if (!empty($validated['outlet_id'])) {
-            $this->outlet = Brand::query()
-                ->find($validated['outlet_id']);
+            $this->outlet = Outlet::query()
+                ->where('brand_id', '=', $validated['brand_id']) // brand id outlet harus sama dengan brand id yang dikirim
+                ->where('id', '=', $validated['outlet_id'])
+                ->first();
+
+
+            // check outlet
+            if (!$this->outlet instanceof Outlet){
+                // outlet is missing
+                throw new BaseException(
+                    rc: ResponseCode::ERR_ENTITY_NOT_FOUND,
+                    message: 'We cannot found the outlet'
+                );
+            }
         }
 
         return $this;
@@ -64,7 +78,7 @@ class CreateProduct extends BaseAction
             $newProduct->brand()->associate($this->brand);
         }
 
-        if ($this->outlet instanceof Brand){
+        if ($this->outlet instanceof Outlet){
             $newProduct->outlet()->associate($this->outlet);
         }
         $newProduct->save();

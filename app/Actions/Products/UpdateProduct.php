@@ -2,16 +2,19 @@
 
 namespace App\Actions\Products;
 
+use App\Enums\ResponseCode\ResponseCode;
 use App\Models\Brands\Brand;
+use App\Models\Outlets\Outlet;
 use App\Models\Products\Product;
 use Illuminate\Validation\ValidationException;
+use Winata\Core\Response\Exception\BaseException;
 use Winata\PackageBased\Abstracts\BaseAction;
 use Winata\PackageBased\Concerns\ValidationInput;
 
 class UpdateProduct extends BaseAction
 {
     use ValidationInput;
-    protected ?Brand $outlet = null;
+    protected ?Outlet $outlet = null;
 
     public function __construct(
         public readonly Product $product,
@@ -23,11 +26,12 @@ class UpdateProduct extends BaseAction
 
     /**
      * @return BaseAction
+     * @throws BaseException
      * @throws ValidationException
      */
     public function rules(): BaseAction
     {
-        $this->validate(
+        $validated = $this->validate(
             inputs: $this->inputs,
             rules: [
                 'outlet_id' => ['nullable', 'string'],
@@ -37,8 +41,19 @@ class UpdateProduct extends BaseAction
         );
 
         if (!empty($validated['outlet_id'])) {
-            $this->outlet = Brand::query()
-                ->find($validated['outlet_id']);
+            $this->outlet = Outlet::query()
+                ->where('brand_id', '=', $this->product->brand_id) // brand id outlet harus sama dengan brand id yang dikirim
+                ->where('id', '=', $validated['outlet_id'])
+                ->first();
+
+            // check outlet
+            if (!$this->outlet instanceof Outlet){
+                // outlet is missing
+                throw new BaseException(
+                    rc: ResponseCode::ERR_ENTITY_NOT_FOUND,
+                    message: 'We cannot found the outlet'
+                );
+            }
         }
 
         return $this;
@@ -53,8 +68,10 @@ class UpdateProduct extends BaseAction
         $this->product->fill($input);
 
         // possible to change outlet where the product has been
-        if ($this->outlet instanceof Brand){
+        if ($this->outlet instanceof Outlet){
             $this->product->outlet()->associate($this->outlet);
+        }else{
+            $this->product->outlet_id = $this->validatedData['outlet_id'];
         }
 
         $this->product->save();

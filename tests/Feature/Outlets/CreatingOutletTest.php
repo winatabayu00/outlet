@@ -81,7 +81,7 @@ it('can create new outlet from endpoint', function () {
     ];
 
     $response = $this->postJson(
-        uri: route('brand.create'),
+        uri: route('outlet.create'),
         data: $outletData,
         headers: [
             'content_type' => 'application/json'

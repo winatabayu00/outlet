@@ -38,6 +38,10 @@ class Product extends Model implements HasMedia
         'price',
     ];
 
+    protected $casts = [
+        'price' => 'float'
+    ];
+
     /**
      * @return BelongsTo
      */
