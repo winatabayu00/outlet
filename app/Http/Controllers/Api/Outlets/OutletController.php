@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Outlets;
 
 use App\Actions\Outlets\DeleteOutlet;
 use App\Http\Controllers\Api\Controller as ApiController;
+use App\Http\Resources\Outlets\OutletCollection;
 use App\Http\Resources\Outlets\OutletResource;
 use App\Models\Outlets\Outlet;
+use App\Queries\Outlet\OutletQuery;
 use App\Services\Outlet\OutletService;
 use Dentro\Yalr\Attributes;
 use Illuminate\Http\Request;
@@ -18,9 +20,18 @@ use Winata\Core\Response\Http\Response;
 class OutletController extends ApiController
 {
     #[Attributes\Get('', name: 'index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return $this->response();
+        $query = (new OutletQuery())->build();
+        if ($request->has('pagination') && 'true' === $request->input('pagination')) {
+            $outlets = $query->paginate(
+                perPage: $request->input('limit'),
+                page: $request->input('page')
+            );
+        } else {
+            $outlets = $query->get();
+        }
+        return $this->response(new OutletCollection($outlets));
     }
 
     /**

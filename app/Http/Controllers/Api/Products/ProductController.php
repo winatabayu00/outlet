@@ -6,9 +6,11 @@ use App\Actions\Outlets\DeleteOutlet;
 use App\Actions\Products\DeleteProduct;
 use App\Http\Controllers\Api\Controller as ApiController;
 use App\Http\Resources\Outlets\OutletResource;
+use App\Http\Resources\Products\ProductCollection;
 use App\Http\Resources\Products\ProductResource;
 use App\Models\Outlets\Outlet;
 use App\Models\Products\Product;
+use App\Queries\Product\ProductQuery;
 use App\Services\Outlet\OutletService;
 use App\Services\Product\ProductService;
 use Dentro\Yalr\Attributes;
@@ -22,9 +24,18 @@ use Winata\Core\Response\Http\Response;
 class ProductController extends ApiController
 {
     #[Attributes\Get('', name: 'index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return $this->response();
+        $query = (new ProductQuery())->build();
+        if ($request->has('pagination') && 'true' === $request->input('pagination')) {
+            $outlets = $query->paginate(
+                perPage: $request->input('limit'),
+                page: $request->input('page')
+            );
+        } else {
+            $outlets = $query->get();
+        }
+        return $this->response(new ProductCollection($outlets));
     }
 
     /**

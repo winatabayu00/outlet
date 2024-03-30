@@ -7,6 +7,7 @@ use App\Actions\Products\UpdateProduct;
 use App\Enums\Media\MediaCollectionNames;
 use App\Models\Products\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Winata\PackageBased\Abstracts\BaseService;
 
@@ -32,6 +33,8 @@ class ProductService extends BaseService
             ]
         );
 
+        DB::beginTransaction();
+
         // create new brand
         $newBrand = (new CreateProduct(inputs: $validated))
             ->handle();
@@ -42,6 +45,8 @@ class ProductService extends BaseService
             source: $request,
             inputName: 'picture',
         )->setCollectionName(MediaCollectionNames::PRODUCT_PICTURE->value);
+
+        DB::commit();
 
         return $newBrand->refresh();
     }
@@ -67,6 +72,8 @@ class ProductService extends BaseService
             ]
         );
 
+        DB::beginTransaction();
+
         // update brand
         (new UpdateProduct(product: $product, inputs: $validated))
             ->handle();
@@ -78,6 +85,8 @@ class ProductService extends BaseService
             inputName: 'picture',
         )->setCollectionName(MediaCollectionNames::PRODUCT_PICTURE->value)
             ->deletePreviousMedia(true);
+
+        DB::commit();
 
         return $product->refresh();
     }

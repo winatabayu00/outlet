@@ -14,7 +14,7 @@ use Winata\Core\Response\Exception\BaseException;
 
 beforeEach(function () {
     $listPrice = range(10000, 100000, 10000);
-    $this->getRandomPrice = (float)rand(0, count($listPrice) - 1);
+    $this->getRandomPrice = (float)rand(1, count($listPrice) - 1);
 
     $this->brand = Brand::query()
         ->firstOrFail();

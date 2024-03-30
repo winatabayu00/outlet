@@ -7,6 +7,7 @@ use App\Actions\Outlets\UpdateOutlet;
 use App\Enums\Media\MediaCollectionNames;
 use App\Models\Outlets\Outlet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Winata\PackageBased\Abstracts\BaseService;
 
@@ -34,6 +35,8 @@ class OutletService extends BaseService
             ]
         );
 
+        DB::beginTransaction();
+
         // create new brand
         $newBrand = (new CreateOutlet(inputs: $validated))
             ->handle();
@@ -44,6 +47,7 @@ class OutletService extends BaseService
             source: $request,
             inputName: 'picture',
         )->setCollectionName(MediaCollectionNames::OUTLET_PICTURE->value);
+        DB::commit();
 
         return $newBrand->refresh();
     }
@@ -70,6 +74,7 @@ class OutletService extends BaseService
             ]
         );
 
+        DB::beginTransaction();
         // update brand
         (new UpdateOutlet(outlet: $outlet, inputs: $validated))
             ->handle();
@@ -81,6 +86,8 @@ class OutletService extends BaseService
             inputName: 'picture',
         )->setCollectionName(MediaCollectionNames::OUTLET_PICTURE->value)
             ->deletePreviousMedia(true);
+
+        DB::commit();
 
         return $outlet->refresh();
     }

@@ -12,7 +12,7 @@ return [
     */
 
     'preloads' => [
-        //
+        \App\Http\Routes\RouteRateLimiter::class
     ],
 
     /*
@@ -51,11 +51,11 @@ return [
 
     'web' => [
         /** @inject web **/
-        \App\Http\Controllers\Api\Brands\BrandController::class,
-        \App\Http\Controllers\Api\Outlets\OutletController::class,
-        \App\Http\Controllers\Api\Products\ProductController::class,
     ],
     'api' => [
         /** @inject api **/
+        \App\Http\Controllers\Api\Brands\BrandController::class,
+        \App\Http\Controllers\Api\Outlets\OutletController::class,
+        \App\Http\Controllers\Api\Products\ProductController::class,
     ],
 ];

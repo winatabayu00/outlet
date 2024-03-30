@@ -23,11 +23,20 @@ class BrandController extends ApiController
      * @throws ValidationException
      */
     #[Attributes\Get('', name: 'index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $query = (new BrandQuery())->build();
 
-        return $this->response(new BrandCollection($query->paginate()));
+        if ($request->has('pagination') && 'true' === $request->input('pagination')) {
+            $brands = $query->paginate(
+                perPage: $request->input('limit'),
+                page: $request->input('page')
+            );
+        } else {
+            $brands = $query->get();
+        }
+
+        return $this->response(new BrandCollection($brands));
     }
 
     /**

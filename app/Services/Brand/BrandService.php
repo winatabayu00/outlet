@@ -8,11 +8,14 @@ use App\Concerns\Medias\MediaConcern;
 use App\Enums\Media\MediaCollectionNames;
 use App\Models\Brands\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Winata\PackageBased\Abstracts\BaseService;
 
 class BrandService extends BaseService
 {
+
+    use MediaConcern;
 
     /**
      * @param Request $request
@@ -32,6 +35,7 @@ class BrandService extends BaseService
             ]
         );
 
+        DB::beginTransaction();
         // create new brand
         $newBrand = (new CreateBrand(inputs: $validated))
             ->handle();
@@ -42,6 +46,8 @@ class BrandService extends BaseService
             source: $request,
             inputName: 'logo',
         )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value);
+
+        DB::commit();
 
         return $newBrand->refresh();
     }
@@ -65,6 +71,8 @@ class BrandService extends BaseService
             ]
         );
 
+        DB::beginTransaction();
+
         // update brand
         $newBrand = (new UpdateBrand(brand: $brand, inputs: $validated))
             ->handle();
@@ -76,6 +84,8 @@ class BrandService extends BaseService
             inputName: 'logo',
         )->setCollectionName(MediaCollectionNames::BRAND_LOGO->value)
             ->deletePreviousMedia(true);
+
+        DB::commit();
 
         return $newBrand->refresh();
     }
