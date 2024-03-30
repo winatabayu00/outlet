@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\DiskDoesNotExist;
 
-trait MediaConcern
+class MediaConcern
 {
     protected ?array $customProperties = null;
     protected ?string $customFileName = null;
@@ -15,31 +15,31 @@ trait MediaConcern
     protected ?string $collectionName = null;
     protected ?string $disk = null;
 
-//    public function __construct(
-//        protected readonly HasMedia       $model,
-//        protected readonly string|Request $source,
-//        protected readonly string         $inputName,
-//    )
-//    {
-//        if (!$this->collectionName) {
-//            $this->collectionName = $inputName;
-//        }
-//    }
+    public function __construct(
+        protected readonly HasMedia       $model,
+        protected readonly string|Request $source,
+        protected readonly string         $inputName,
+    )
+    {
+        if (!$this->collectionName) {
+            $this->collectionName = $inputName;
+        }
+    }
 
-//    /**
-//     * @return void
-//     * @throws DiskDoesNotExist
-//     */
-//    public function linkedMediaCollection(): void
-//    {
-//        if ($this->deletePreviousMedia) {
-//            if ($this->model->getMedia($this->collectionName)->count() > 0) {
-//                $this->model->clearMediaCollection($this->collectionName); // all media in the images collection will be deleted
-//
-//                $this->handleUploadedMedia();
-//            }
-//        }
-//    }
+    /**
+     * @return void
+     * @throws DiskDoesNotExist
+     */
+    public function linkedMediaCollection(): void
+    {
+        if ($this->deletePreviousMedia) {
+            if ($this->model->getMedia($this->collectionName)->count() > 0) {
+                $this->model->clearMediaCollection($this->collectionName); // all media in the images collection will be deleted
+
+                $this->handleUploadedMedia();
+            }
+        }
+    }
 
     /**
      * @return void
@@ -134,89 +134,89 @@ trait MediaConcern
         }
     }
 
-    /**
-     * @param HasMedia $model
-     * @param Request $request
-     * @param string $inputName
-     * @param string|null $collectionName
-     * @param string|null $usingFileName
-     * @param bool $deletePreviousMedia
-     * @param string|null $disk
-     */
-    public function linkedMediaCollection(
-        HasMedia $model,
-        Request $request,
-        string $inputName,
-        ?string $collectionName = null,
-        ?string $usingFileName = null,
-        bool $deletePreviousMedia = false,
-        ?string $disk = null
-    ): void
-    {
-        if (in_array($request->input('avatar_remove') ?? null, ['1', true])){
-            $model->clearMediaCollection($collectionName); // all media in the images collection will be deleted
-        }
-
-        if (!$collectionName) {
-            $collectionName = $inputName;
-        }
-
-        if (empty($usingFileName)){
-            $usingFileName = $inputName;
-        }
-
-        if ($deletePreviousMedia){
-            if ($request->hasFile($inputName)){
-                if ($model->getMedia($collectionName)->count() > 0){
-                    $model->clearMediaCollection($collectionName); // all media in the images collection will be deleted
-                }
-            }
-        }
-
-        $customProperty = [];
-
-        if (is_string($request->input($inputName))) {
-            if (str($request->input($inputName))->startsWith('data:')) {
-                $model->addMediaFromBase64($request->input($inputName))
-                    ->usingFileName($usingFileName)
-                    ->toMediaCollection($collectionName);
-            }
-            if (str($request->input($inputName))->isMatch('/https?:\/\//')) {
-                $model->addMediaFromUrl($request->input($inputName))
-                    ->usingFileName($usingFileName)
-                    ->toMediaCollection($collectionName);
-            }
-            if (str($request->input($inputName))->isMatch('/http?:\/\//')) {
-                $model->addMediaFromUrl($request->input($inputName))
-                    ->usingFileName($usingFileName)
-                    ->toMediaCollection($collectionName);
-            }
-        }
-
-
-        if (is_array($request->file($inputName))){
-            if ($request->hasFile($inputName)) {
-                $model->addMultipleMediaFromRequest([$inputName])
-                    ->each(function ($fileAddr) use ($usingFileName, $inputName, $customProperty, $collectionName) {
-                        $fileAddr
-                            ->withCustomProperties($customProperty)
-                            ->usingFileName($usingFileName);
-                        $fileAddr
-                            ->toMediaCollection($collectionName);
-                    });
-            }
-        }else{
-            if ($request->hasFile($inputName)) {
-                $media = $model->addMediaFromRequest($inputName);
-                $media
-                    ->withCustomProperties($customProperty)
-                    ->usingFileName($usingFileName);
-
-                $media->toMediaCollection($collectionName);
-            }
-        }
-
-    }
+//    /**
+//     * @param HasMedia $model
+//     * @param Request $request
+//     * @param string $inputName
+//     * @param string|null $collectionName
+//     * @param string|null $usingFileName
+//     * @param bool $deletePreviousMedia
+//     * @param string|null $disk
+//     */
+//    public function linkedMediaCollection(
+//        HasMedia $model,
+//        Request $request,
+//        string $inputName,
+//        ?string $collectionName = null,
+//        ?string $usingFileName = null,
+//        bool $deletePreviousMedia = false,
+//        ?string $disk = null
+//    ): void
+//    {
+//        if (in_array($request->input('avatar_remove') ?? null, ['1', true])){
+//            $model->clearMediaCollection($collectionName); // all media in the images collection will be deleted
+//        }
+//
+//        if (!$collectionName) {
+//            $collectionName = $inputName;
+//        }
+//
+//        if (empty($usingFileName)){
+//            $usingFileName = $inputName;
+//        }
+//
+//        if ($deletePreviousMedia){
+//            if ($request->hasFile($inputName)){
+//                if ($model->getMedia($collectionName)->count() > 0){
+//                    $model->clearMediaCollection($collectionName); // all media in the images collection will be deleted
+//                }
+//            }
+//        }
+//
+//        $customProperty = [];
+//
+//        if (is_string($request->input($inputName))) {
+//            if (str($request->input($inputName))->startsWith('data:')) {
+//                $model->addMediaFromBase64($request->input($inputName))
+//                    ->usingFileName($usingFileName)
+//                    ->toMediaCollection($collectionName);
+//            }
+//            if (str($request->input($inputName))->isMatch('/https?:\/\//')) {
+//                $model->addMediaFromUrl($request->input($inputName))
+//                    ->usingFileName($usingFileName)
+//                    ->toMediaCollection($collectionName);
+//            }
+//            if (str($request->input($inputName))->isMatch('/http?:\/\//')) {
+//                $model->addMediaFromUrl($request->input($inputName))
+//                    ->usingFileName($usingFileName)
+//                    ->toMediaCollection($collectionName);
+//            }
+//        }
+//
+//
+//        if (is_array($request->file($inputName))){
+//            if ($request->hasFile($inputName)) {
+//                $model->addMultipleMediaFromRequest([$inputName])
+//                    ->each(function ($fileAddr) use ($usingFileName, $inputName, $customProperty, $collectionName) {
+//                        $fileAddr
+//                            ->withCustomProperties($customProperty)
+//                            ->usingFileName($usingFileName);
+//                        $fileAddr
+//                            ->toMediaCollection($collectionName);
+//                    });
+//            }
+//        }else{
+//            if ($request->hasFile($inputName)) {
+//                $media = $model->addMediaFromRequest($inputName);
+//                $media
+//                    ->withCustomProperties($customProperty)
+//                    ->usingFileName($usingFileName);
+//
+//                $media->toMediaCollection($collectionName);
+//            }
+//        }
+//
+//    }
 
     public
     function usingCustomFileName(?string $customFileName): MediaConcern
@@ -275,6 +275,6 @@ trait MediaConcern
     public
     function __destruct()
     {
-//        $this->linkedMediaCollection();
+        $this->linkedMediaCollection();
     }
 }
