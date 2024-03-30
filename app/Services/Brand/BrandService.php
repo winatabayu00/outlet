@@ -4,7 +4,6 @@ namespace App\Services\Brand;
 
 use App\Actions\Brands\CreateBrand;
 use App\Actions\Brands\UpdateBrand;
-use App\Concerns\Medias\MediaConcern;
 use App\Enums\Media\MediaCollectionNames;
 use App\Models\Brands\Brand;
 use Illuminate\Http\Request;
@@ -14,8 +13,6 @@ use Winata\PackageBased\Abstracts\BaseService;
 
 class BrandService extends BaseService
 {
-
-    use MediaConcern;
 
     /**
      * @param Request $request
@@ -31,7 +28,7 @@ class BrandService extends BaseService
             inputs: $request->input(),
             rules: [
                 'name' => ['required', 'max:255'],
-                'logo' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 
@@ -67,7 +64,7 @@ class BrandService extends BaseService
             inputs: $request->input(),
             rules: [
                 'name' => ['required', 'max:255'],
-                'logo' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 

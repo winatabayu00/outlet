@@ -31,7 +31,7 @@ class OutletService extends BaseService
                 'address' => ['required', 'string'],
                 'longitude' => ['required', 'numeric'],
                 'latitude' => ['required', 'numeric'],
-                'picture' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 
@@ -70,7 +70,7 @@ class OutletService extends BaseService
                 'address' => ['required', 'string'],
                 'longitude' => ['required', 'numeric'],
                 'latitude' => ['required', 'numeric'],
-                'picture' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 

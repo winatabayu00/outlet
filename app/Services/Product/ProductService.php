@@ -29,7 +29,7 @@ class ProductService extends BaseService
                 'outlet_id' => ['nullable', 'string'],
                 'name' => ['required', 'string', 'max:255'],
                 'price' => ['required', 'numeric', 'gt:0'],
-                'picture' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 
@@ -68,7 +68,7 @@ class ProductService extends BaseService
                 'outlet_id' => ['nullable', 'string'],
                 'name' => ['required', 'string', 'max:255'],
                 'price' => ['required', 'numeric', 'gt:0'],
-                'picture' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+                'picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 
