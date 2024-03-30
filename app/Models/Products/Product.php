@@ -16,6 +16,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * @property string id
+ * @property string brand_id
+ * @property string outlet_id
  * @property string name
  * @property float price
  * @property \DateTimeInterface|Carbon created_at

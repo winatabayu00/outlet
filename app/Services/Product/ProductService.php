@@ -1,41 +1,39 @@
 <?php
 
-namespace App\Services\Outlet;
+namespace App\Services\Product;
 
-use App\Actions\Outlets\CreateOutlet;
-use App\Actions\Outlets\UpdateOutlet;
+use App\Actions\Products\CreateProduct;
+use App\Actions\Products\UpdateProduct;
 use App\Enums\Media\MediaCollectionNames;
-use App\Models\Outlets\Outlet;
+use App\Models\Products\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Winata\PackageBased\Abstracts\BaseService;
 
-class OutletService extends BaseService
+class ProductService extends BaseService
 {
-
     /**
      * @param Request $request
-     * @return Outlet
+     * @return Product
      * @throws ValidationException
      */
     public function create(
         Request $request
-    ): Outlet
+    ): Product
     {
         $validated = $this->validate(
             inputs: $request->input(),
             rules: [
                 'brand_id' => ['required', 'string'],
+                'outlet_id' => ['nullable', 'string'],
                 'name' => ['required', 'string', 'max:255'],
-                'address' => ['required', 'string'],
-                'longitude' => ['required', 'numeric'],
-                'latitude' => ['required', 'numeric'],
+                'price' => ['required', 'numeric', 'gt:0'],
                 'picture' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 
         // create new brand
-        $newBrand = (new CreateOutlet(inputs: $validated))
+        $newBrand = (new CreateProduct(inputs: $validated))
             ->handle();
 
         // link brand picture
@@ -43,45 +41,44 @@ class OutletService extends BaseService
             model: $newBrand,
             source: $request,
             inputName: 'picture',
-        )->setCollectionName(MediaCollectionNames::OUTLET_PICTURE->value);
+        )->setCollectionName(MediaCollectionNames::PRODUCT_PICTURE->value);
 
         return $newBrand->refresh();
     }
 
     /**
-     * @param Outlet $outlet
+     * @param Product $product
      * @param Request $request
-     * @return Outlet
+     * @return Product
      * @throws ValidationException
      */
     public function update(
-        Outlet  $outlet,
+        Product $product,
         Request $request,
-    ): Outlet
+    ): Product
     {
         $validated = $this->validate(
             inputs: $request->input(),
             rules: [
+                'outlet_id' => ['nullable', 'string'],
                 'name' => ['required', 'string', 'max:255'],
-                'address' => ['required', 'string'],
-                'longitude' => ['required', 'numeric'],
-                'latitude' => ['required', 'numeric'],
+                'price' => ['required', 'numeric', 'gt:0'],
                 'picture' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ]
         );
 
         // update brand
-        (new UpdateOutlet(outlet: $outlet, inputs: $validated))
+        (new UpdateProduct(product: $product, inputs: $validated))
             ->handle();
 
         // link brand picture
         linkedMediaCollection(
-            model: $outlet,
+            model: $product,
             source: $request,
             inputName: 'picture',
-        )->setCollectionName(MediaCollectionNames::OUTLET_PICTURE->value)
+        )->setCollectionName(MediaCollectionNames::PRODUCT_PICTURE->value)
             ->deletePreviousMedia(true);
 
-        return $outlet->refresh();
+        return $product->refresh();
     }
 }
