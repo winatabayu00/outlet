@@ -35,10 +35,10 @@ class MediaConcern
         if ($this->deletePreviousMedia) {
             if ($this->model->getMedia($this->collectionName)->count() > 0) {
                 $this->model->clearMediaCollection($this->collectionName); // all media in the images collection will be deleted
-
-                $this->handleUploadedMedia();
             }
         }
+
+        $this->handleUploadedMedia();
     }
 
     /**
